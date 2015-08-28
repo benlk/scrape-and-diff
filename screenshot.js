@@ -4,7 +4,7 @@ var args = system.args;
 var webpage = require('webpage')
 
 function rendermax(site) {
-  var slug = site.split('/')[2];
+  var slug = site.replace('http://','').replace(/\//g,'_');
   var page = webpage.create();
   page.viewportSize= {
     width: 1600,
