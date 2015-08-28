@@ -1,8 +1,23 @@
-# Gannett site comparisons
+# INN site comparisons
 
-I wondered what the 'average' Gannett-owned website looked like, so I wrote this tool to screenshot them all. You can read more about this project and see the results [here](http://localhost/dropplets-benlk/2014-10-19-what-the-average-gannett-site-looks-like). This tool isn't terribly Gannett-specific, and can be reused for serial screenshotting of other things.
+Goals:
 
-![Screenshot example, using US websites](https://farm6.staticflickr.com/5613/15554519706_fbcdc6ee9a_n.jpg)
+1. Get list of INN sites from http://inn.org/members/
+2. Take screenshots of notable places on live sites
+	- [ ] Homepage `/`
+	- [ ] Articles `/?p=1234`
+	- [ ] Series `/series/slug/` `/?series=1234`
+	- [ ] Category archive pages `/category/slug/`
+	- [ ] Series archive pages `/series/slug/`
+	- [ ] Series landing pages `/slug/`
+	- [ ] Search results `/?s=words`
+	- [ ] Pages `/slug/`
+	- [ ] Tag archives `/tag/slug`
+	- [ ] Roundup pages `/roundup/slug`
+3. Take screenshots of notable places on staging/vagrant sites
+4. Diff the images
+	- in ruby: http://jeffkreeftmeijer.com/2011/comparing-images-and-creating-image-diffs/
+	- in imagemagick: https://stackoverflow.com/questions/5132749/diff-an-image-using-imagemagick
 
 ## Setup
 
@@ -19,31 +34,19 @@ To get all the screenshots:
 ./run.sh
 ```
 
-This downloads the list of Gannett websites by parsing two Gannett lists, and excludes some non-news sites. It then pipes that list of websites into PhantomJS' screenshot tool. 
+This downloads the list of INN member site URLs as found on inn.org/members
 
 If you want to exclude certain sites, add them to the array in nokigiri.rb.
 
-To find the average:
-
-```
-convert -background transparent -gravity North -resize "1600x6000>" -extent 1600x6000 img/*.png -evaluate-sequence mean average-gannett-site.png
-```
-
-This averages the screenshots using ImageMagick. A more detailed eplanation of what's going on can be found [here](http://blog.patdavid.net/2012/08/imagemagick-average-blending-files.html). 
-
-The resulting image will be mostly-transparent and very washed-out, so you'll want to open it up in an image editor such as The Gimp or Photoshop and perform the following:
-
-1. Flatten the imate to remove transparency
-2. Auto Equalize the image to bring up the contrast
-3. (optional) Adjust the saturation of colors
-
 ## Reusing
 
-`nokogiri.rb` is set up for Gannett sites, but it's really not that hard to edit for grabbing a list of URLs out of any other page. Just make sure to change the CSS selectors to point to your specific URLs. The output is [not deduplicated or sorted](http://benlk.com/static/uploads/site-list.txt).
+`nokogiri.rb` is set up for INN sites, but it's really not that hard to edit for grabbing a list of URLs out of any other page. Just make sure to change the CSS selectors to point to your specific URLs. The output is [not deduplicated or sorted](http://benlk.com/static/uploads/site-list.txt).
+
+This repo is a fork of benlk/gannett-scraper. 
 
 ## License
 
-MIT License, because this code isn't really that important. 
+MIT License, because this code isn't really that important.
 
 Copyright &copy; 2014 Benjamin Keith
 
