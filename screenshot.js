@@ -10,39 +10,40 @@ var sizes = {
   'mobile' : { width: 420, height: 720 },
 }
 
-function render(site, size, dimensions) {
-  var page = webpage.create();
-  page.viewportSize = dimensions;
-  do_the_dirty_work(site, page, size);
-}
-
-function do_the_dirty_work(site, page, size) {
+function do_the_dirty_work(site, size, dimensions) {
   var slug = site.split('/')[2];
   var filename = site.replace('http://','').replace(/\//g,'_');
-  console.log(site);
+  var page = webpage.create();
+  page.viewportSize = dimensions;
   page.open(site, function(status) {
     if (status !== 'success') {
       console.error('Unable to load '+site+'!');
       page.close();
       phantom.exit();
     } else {
-      console.log('attempting to render ' + filename);
+      console.log('attempting to render ' + filename + ' at ' + size);
       window.setTimeout(function () {
         page.render('img/'+ slug + '/' + size + '_' + filename+'.png', {format: 'png'});
         console.log('\trendered img/' + slug + '/' + size + '_' + filename + '.png');
         page.close();
         phantom.exit();
-      }, 1000); // Change timeout as required to allow sufficient time
+      }, 5000); // Change timeout as required to allow sufficient time
     }
   });
 }
+
+
+
+// This should be fed a single URL
 if (args.length === 1) {
   console.log('You need to pass a URL as an argument for this script.');
 } else {
   var site = args[1];
   for (var size in sizes) {
     if (sizes.hasOwnProperty(size)) {
-      render(site, size, sizes[size]);
+      do_the_dirty_work(site, size, sizes[size]);
+    } else {
+      console.error('something has gone wrong in the for loop in screenshot.js');
     }
   }
 }
